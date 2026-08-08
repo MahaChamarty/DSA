@@ -4,26 +4,26 @@ class Solution {
         int m = word2.length();
         char[] a = word1.toCharArray();
         char[] b = word2.toCharArray();
-
-        int[] suffix = new int[n+1];
+        int[] ans = new int[n+1];
         int j = m-1;
         for(int i = n-1; i >= 0; i--){
-            suffix[i] = suffix[i+1];
+            ans[i] = ans[i+1];
             if(j >= 0 && a[i] == b[j]){
-                suffix[i]++;
+                ans[i]++;
                 j--;
             }
         }
-        int[] ans = new int[m];
+
+        int[] res = new int[m];
         int i = 0;
         j = 0;
         while(i < n && j < m){
             if(a[i] == b[j]){
-                ans[j] = i;
+                res[j] = i;
                 j++;
             }
-            else if(suffix[i+1] >= m-j-1){
-                ans[j] = i;
+            else if(ans[i+1] >= m-j-1){
+                res[j] = i;
                 j++;
                 i++;
                 break;
@@ -36,7 +36,7 @@ class Solution {
         }
         while(i < n && j < m){
             if(a[i] == b[j]){
-                ans[j] = i;
+                res[j] = i;
                 j++;
             }
             i++;
@@ -45,6 +45,6 @@ class Solution {
         if(j < m){
             return new int[0];
         }
-        return ans;
+        return res;
     }
 }

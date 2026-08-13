@@ -1,5 +1,5 @@
 class Solution {
-    int[] pref, suff, best, len;
+    int[] pref, suff, len, best;
     char[] left, right;
 
     public int[] longestRepeating(String s, String queryCharacters, int[] queryIndices) {
@@ -19,28 +19,29 @@ class Solution {
         return ans;
     }
 
-    void build(int node, int l, int r, String s){
+    void build(int node, int l, int r, String str){
         if(l == r){
-            left[node] = right[node] = s.charAt(l);
+            left[node] = right[node] = str.charAt(l);
             pref[node] = suff[node] = best[node] = 1;
             len[node] = 1;
             return;
         }
         int mid = (l+r)/2;
-        build(node*2, l, mid, s);
-        build(node*2+1, mid+1, r, s);
+        build(node*2, l, mid, str);
+        build(node*2+1, mid+1, r, str);
         merge(node, node*2, node*2+1);
     }
 
-    void update(int node, int l, int r, int idx, char c){
+    void update(int node, int l, int r, int ind, char ch){
         if(l == r){
-            left[node] = right[node] = c;
+            left[node] = right[node] = ch;
             pref[node] = suff[node] = best[node] = 1;
+            len[node] = 1;
             return;
         }
         int mid = (l+r)/2;
-        if(idx <= mid) update(node*2, l, mid, idx, c);
-        else update(node*2+1, mid+1, r, idx, c);
+        if(ind <= mid) update(node*2, l, mid, ind, ch);
+        else update(node*2+1, mid+1, r, ind, ch);
         merge(node, node*2, node*2+1);
     }
 
@@ -50,9 +51,8 @@ class Solution {
         pref[node] = pref[a];
         suff[node] = suff[b];
         best[node] = Math.max(best[a], best[b]);
-        len[node] = len[a]+len[b];
+        len[node] = len[a] + len[b];
         if(right[a] == left[b]){
-            best[node] = Math.max(best[a], best[b]);
             best[node] = Math.max(best[node], suff[a]+pref[b]);
             if(pref[a] == len[a]) pref[node] = len[a]+pref[b];
             if(suff[b] == len[b]) suff[node] = len[b]+suff[a];

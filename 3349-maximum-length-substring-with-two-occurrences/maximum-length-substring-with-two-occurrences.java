@@ -1,14 +1,14 @@
 class Solution {
     public int maximumLengthSubstring(String s) {
-        int freq[] = new int[26];
-        int left = 0, ans = 0;
-        for(int right = 0; right < s.length(); right++){
-            freq[s.charAt(right)-'a']++;
-            while(freq[s.charAt(right)-'a'] > 2){
-                freq[s.charAt(left)-'a']--;
-                left++;
+        int f[] = new int[26];
+        int l = 0, ans = 0;
+        for(int r = 0; r < s.length(); r++){
+            f[s.charAt(r)-'a']++;
+            while(f[s.charAt(r)-'a'] > 2){
+                f[s.charAt(l)-'a']--;
+                l++;
             }
-            ans = Math.max(ans, right-left+1);
+            ans = Math.max(ans, r-l+1);
         }
         return ans;
     }
